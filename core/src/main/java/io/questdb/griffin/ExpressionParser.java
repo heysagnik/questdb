@@ -335,7 +335,8 @@ public class ExpressionParser {
                         break;
 
                     case ']':
-                        if (isTypeQualifier()) {
+                        if (isTypeQualifier() && Chars.endsWith(opStack.peek(0).token, '[')) {
+                            // only capture type[] tokens
                             ExpressionNode en = opStack.peek();
                             ((GenericLexer.FloatingSequence) en.token).setHi(lastPos + 1);
                         } else {
@@ -377,9 +378,7 @@ public class ExpressionParser {
                             node.paramCount = 2;
                             opStack.push(node);
                         }
-
                         break;
-
                     case 'g':
                     case 'G':
                         if (SqlKeywords.isGeoHashKeyword(tok)) {
@@ -1290,6 +1289,7 @@ public class ExpressionParser {
     }
 
     static {
+        nonLiteralBranches.add(BRANCH_RIGHT_BRACKET);
         nonLiteralBranches.add(BRANCH_RIGHT_PARENTHESIS);
         nonLiteralBranches.add(BRANCH_CONSTANT);
         nonLiteralBranches.add(BRANCH_LITERAL);

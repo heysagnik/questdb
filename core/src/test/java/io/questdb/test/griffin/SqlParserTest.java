@@ -376,6 +376,54 @@ public class SqlParserTest extends AbstractSqlParserTest {
     }
 
     @Test
+    public void testArrayConstDereference() throws Exception {
+        assertQuery(
+                "select-virtual [](current_schemas(false),0) [] from (long_sequence(1))",
+                "select current_schemas(false)[0]"
+        );
+    }
+
+    @Test
+    public void testArrayConstDereferenceWithLiteral() throws Exception {
+        assertQuery(
+                "select-virtual [](current_schemas(false),0) [] from (long_sequence(1))",
+                "select current_schemas(false)[0] from long_sequence(1)"
+        );
+    }
+
+    @Test
+    public void testArrayFieldDereferenceWithLiteral() throws Exception {
+        assertQuery(
+                "select-virtual [](current_schemas(false),x) [] from (select-virtual [cast(x,int) x] cast(x,int) x from (select [x] from long_sequence(1)))",
+                "select current_schemas(false)[x] from (select x::int x from long_sequence(1));"
+        );
+    }
+
+    @Test
+    public void testArrayFieldCastDereference() throws Exception {
+        assertQuery(
+                "select-virtual [](current_schemas(false),cast(x,int)) [] from (select [x] from long_sequence(1))",
+                "select current_schemas(false)[x::int] from long_sequence(1);"
+        );
+    }
+
+    @Test
+    public void testArrayFieldArithmeticDereference() throws Exception {
+        assertQuery(
+                "select-virtual [](current_schemas(false),x + 1) [] from (select [x] from long_sequence(1))",
+                "select current_schemas(false)[x+1] from long_sequence(1);"
+        );
+    }
+
+    @Test
+    public void testCastToArray() throws SqlException {
+        assertQuery(
+                "select-virtual <>all(x,cast('{abc,xyz}',text[])) <>all from (select [x] from long_sequence(1))",
+                "select x <> all('{abc,xyz}'::text[])"
+        );
+    }
+
+    @Test
     public void testAsOfJoinSubQuerySimpleNoAlias() throws Exception {
         assertQuery(
                 "select-choose c.customerId customerId, _xQdbA0.blah blah, _xQdbA0.lastName lastName, _xQdbA0.customerId customerId1, _xQdbA0.timestamp timestamp from (select [customerId] from customers c asof join select [blah, lastName, customerId, timestamp] from (select-virtual ['1' blah, lastName, customerId, timestamp] '1' blah, lastName, customerId, timestamp from (select-choose [lastName, employeeId customerId, timestamp] lastName, employeeId customerId, timestamp from (select [lastName, employeeId, timestamp] from employees)) order by lastName) _xQdbA0 on _xQdbA0.customerId = c.customerId) c",
