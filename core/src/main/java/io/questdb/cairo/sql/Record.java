@@ -42,6 +42,15 @@ public interface Record {
     CharSequenceFunction GET_SYM = Record::getSym;
 
     /**
+     * For array column types returns the length of the array.
+     *
+     * @return returns -1 if array is null or length of the array.
+     */
+    default int getArrayLength() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Gets the value of a binary column by index
      *
      * @param col numeric index of the column
@@ -172,6 +181,17 @@ public interface Record {
     }
 
     /**
+     * This method fetches the nth entry from an int array column.
+     *
+     * @param col        column index
+     * @param arrayIndex array entry index, 0-based
+     * @return value of the array entry
+     */
+    default int getInt(int col, int arrayIndex) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * Gets the value of a long column by index
      *
      * @param col numeric index of the column
@@ -268,6 +288,32 @@ public interface Record {
      */
     default void getStr(int col, CharSink sink) {
         sink.put(getStr(col));
+    }
+
+    /**
+     * This method fetches the nth entry from a String array column.
+     * The record, usually positioned at the array's beginning, contains
+     * two mutable CharSequence wrappers, with "A" representing the first wrapper.
+     *
+     * @param col   column index
+     * @param index array entry index, 0-based
+     * @return mutable CharSequence wrapper over array entry
+     */
+    default CharSequence getStrA(int col, int index) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * This method fetches the nth entry from a String array column.
+     * The record, usually positioned at the array's beginning, contains
+     * two mutable CharSequence wrappers, with "B" representing the second wrapper.
+     *
+     * @param col   column index
+     * @param index array entry index, 0-based
+     * @return mutable CharSequence wrapper over array entry
+     */
+    default CharSequence getStrB(int col, int index) {
+        throw new UnsupportedOperationException();
     }
 
     /**

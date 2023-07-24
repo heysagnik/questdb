@@ -47,14 +47,14 @@ public class IntArrayDereferenceHackFunctionFactory implements FunctionFactory {
 
     @Override
     public Function newInstance(int position, ObjList<Function> args, IntList argPositions, CairoConfiguration configuration, SqlExecutionContext sqlExecutionContext) {
-        return new StrArrayDereferenceFunction(args.getQuick(0), args.getQuick(1));
+        return new IntArrayDereferenceFunction(args.getQuick(0), args.getQuick(1));
     }
 
-    private static class StrArrayDereferenceFunction extends IntFunction implements BinaryFunction {
+    private static class IntArrayDereferenceFunction extends IntFunction implements BinaryFunction {
         private final Function arrayFunction;
         private final Function indexFunction;
 
-        public StrArrayDereferenceFunction(Function arrayFunction, Function indexFunction) {
+        public IntArrayDereferenceFunction(Function arrayFunction, Function indexFunction) {
             this.arrayFunction = arrayFunction;
             this.indexFunction = indexFunction;
         }
