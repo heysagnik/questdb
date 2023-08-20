@@ -16,7 +16,7 @@
 </p>
 
 [English](https://github.com/questdb/questdb) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-hk.md) | [العربية](README.ar-dz.md) | [Italiano](README.it-it.md) | [Українська](README.ua-ua.md) | [Español](README.es-es.md) | [Português](README.pt.md) |  日本語
-
+ | [हिंदी](./i18n/README.hn-in.md)
 # QuestDB
 
 QuestDB は、アプリケーション向けの高性能なオープンソース SQL データベースです。
